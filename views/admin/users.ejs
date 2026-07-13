@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="page-title-section">
+  <h1>User Control Panel</h1>
+  <p class="subtitle">Administrator actions: manage roles and user accounts.</p>
+</div>
+
+<div class="card admin-users-card">
+  <div class="card-header">
+    <h3><i class="fa-solid fa-users-gear"></i> System Registrations</h3>
+  </div>
+  <div class="card-body">
+    <% if (users && users.length > 0) { %>
+      <div class="table-responsive">
+        <table class="admin-users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Contact</th>
+              <th>Address</th>
+              <th>Registered</th>
+              <th>Role Permissions</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.forEach(userRec => { %>
+              <tr>
+                <td><%= userRec.id %></td>
+                <td><strong><%= userRec.username %></strong></td>
+                <td><%= userRec.email %></td>
+                <td><%= userRec.contact %></td>
+                <td><small><%= userRec.address %></small></td>
+                <td><%= new Date(userRec.created_at).toLocaleDateString() %></td>
+                <td>
+                  <form action="/admin/users/<%= userRec.id %>/role" method="POST" class="inline-form">
+                    <select name="role" class="form-control form-control-sm" onchange="this.form.submit()">
+                      <option value="member" <%= userRec.role === 'member' ? 'selected' : '' %>>Member</option>
+                      <option value="admin" <%= userRec.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                    </select>
+                  </form>
+                </td>
+                <td>
+                  <a href="/admin/users/<%= userRec.id %>/delete" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this user? All their events and tasks will also be deleted.')">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p class="text-center text-muted py-4">No other users are currently registered in the database.</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,97 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="page-title-section flex-between">
+  <div>
+    <h1><%= user.role === 'admin' ? 'Global Events Directory' : 'My Events' %></h1>
+    <p class="subtitle">Manage, edit, and track your events.</p>
+  </div>
+  <a href="/events/new" class="btn btn-primary">
+    <i class="fa-solid fa-calendar-plus"></i> Create Event
+  </a>
+</div>
+
+<!-- Search, Filter & Sort Form -->
+<form action="/events" method="GET" class="filter-card">
+  <div class="filter-grid">
+    <div class="form-group no-margin">
+      <label for="search"><i class="fa-solid fa-magnifying-glass"></i> Search</label>
+      <input type="text" id="search" name="search" class="form-control" placeholder="Search by title, location..." value="<%= search %>">
+    </div>
+    
+    <div class="form-group no-margin">
+      <label for="category"><i class="fa-solid fa-tags"></i> Category</label>
+      <select id="category" name="category" class="form-control">
+        <option value="All">All Categories</option>
+        <% categories.forEach(cat => { %>
+          <option value="<%= cat %>" <%= selectedCategory === cat ? 'selected' : '' %>><%= cat %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="form-group no-margin">
+      <label for="sort"><i class="fa-solid fa-sort"></i> Sort By</label>
+      <select id="sort" name="sort" class="form-control">
+        <option value="event_date_asc" <%= selectedSort === 'event_date_asc' ? 'selected' : '' %>>Date: Sooner First</option>
+        <option value="event_date_desc" <%= selectedSort === 'event_date_desc' ? 'selected' : '' %>>Date: Later First</option>
+        <option value="budget_desc" <%= selectedSort === 'budget_desc' ? 'selected' : '' %>>Budget: High to Low</option>
+        <option value="budget_asc" <%= selectedSort === 'budget_asc' ? 'selected' : '' %>>Budget: Low to High</option>
+      </select>
+    </div>
+
+    <div class="filter-actions align-self-end">
+      <button type="submit" class="btn btn-indigo btn-block">Apply Filters</button>
+    </div>
+  </div>
+</form>
+
+<!-- Events List Grid -->
+<% if (events && events.length > 0) { %>
+  <div class="events-grid">
+    <% events.forEach(event => { %>
+      <div class="event-card">
+        <div class="event-card-header">
+          <span class="event-category-badge"><%= event.category %></span>
+          <span class="badge badge-<%= event.status.toLowerCase() %>"><%= event.status %></span>
+        </div>
+        
+        <div class="event-card-body">
+          <h3 class="event-title"><a href="/events/<%= event.event_id %>"><%= event.title %></a></h3>
+          <p class="event-desc"><%= event.description ? (event.description.length > 100 ? event.description.substring(0, 100) + '...' : event.description) : 'No description provided.' %></p>
+          
+          <div class="event-meta-info">
+            <p><i class="fa-regular fa-calendar-days text-indigo"></i> <%= new Date(event.event_date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) %> at <%= event.event_time.substring(0,5) %></p>
+            <p><i class="fa-solid fa-location-dot text-rose"></i> <%= event.location %></p>
+            <p class="event-budget-metric"><i class="fa-solid fa-wallet text-emerald"></i> Budget: <strong>$<%= parseFloat(event.budget).toLocaleString() %></strong></p>
+            <% if (user.role === 'admin') { %>
+              <p class="admin-label"><i class="fa-solid fa-user-tie"></i> Owner ID: <%= event.user_id %></p>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="event-card-footer">
+          <a href="/events/<%= event.event_id %>" class="btn btn-indigo btn-sm">
+            <i class="fa-solid fa-circle-info"></i> Details
+          </a>
+          <div class="card-footer-actions">
+            <a href="/events/<%= event.event_id %>/edit" class="btn btn-outline btn-sm">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </a>
+            <a href="/events/<%= event.event_id %>/delete" class="btn btn-danger btn-sm btn-icon-only" onclick="return confirm('Are you sure you want to delete this event? This will also delete all tasks associated with it.')">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else { %>
+  <div class="empty-state-container">
+    <i class="fa-solid fa-calendar-xmark empty-icon"></i>
+    <h2>No Events Found</h2>
+    <p>We couldn't find any events matching your search or filters.</p>
+    <a href="/events/new" class="btn btn-primary">Create an Event Now</a>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>

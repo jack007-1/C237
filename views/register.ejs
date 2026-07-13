@@ -1,0 +1,49 @@
+<%- include('partials/header') %>
+<%- include('partials/sidebar') %>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <i class="fa-solid fa-user-plus auth-icon"></i>
+      <h2>Create an Account</h2>
+      <p>Sign up to start organizing your personal events</p>
+    </div>
+    
+    <form action="/register" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="username"><i class="fa-solid fa-user"></i> Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="e.g. john_doe" value="<%= typeof formData !== 'undefined' ? formData.username : '' %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="e.g. john@example.com" value="<%= typeof formData !== 'undefined' ? formData.email : '' %>" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="At least 6 characters" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="contact"><i class="fa-solid fa-phone"></i> Contact Number</label>
+          <input type="text" id="contact" name="contact" class="form-control" placeholder="e.g. 87654321" value="<%= typeof formData !== 'undefined' ? formData.contact : '' %>" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address"><i class="fa-solid fa-map-location-dot"></i> Home Address</label>
+        <input type="text" id="address" name="address" class="form-control" placeholder="e.g. Blk 123 Woodlands St 13 #05-01" value="<%= typeof formData !== 'undefined' ? formData.address : '' %>" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
+    </form>
+    
+    <div class="auth-footer">
+      <p>Already have an account? <a href="/login">Sign in here</a></p>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

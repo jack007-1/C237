@@ -1,0 +1,72 @@
+<!-- Sidebar Navigation -->
+<aside class="sidebar">
+  <nav class="sidebar-nav">
+    <ul>
+      <% if (user) { %>
+        <li>
+          <a href="/dashboard" class="nav-item">
+            <i class="fa-solid fa-chart-line nav-icon"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/events" class="nav-item">
+            <i class="fa-solid fa-calendar-days nav-icon"></i>
+            <span>My Events</span>
+          </a>
+        </li>
+        <li>
+          <a href="/events/new" class="nav-item">
+            <i class="fa-solid fa-calendar-plus nav-icon"></i>
+            <span>Create Event</span>
+          </a>
+        </li>
+
+        <% if (user.role === 'admin') { %>
+          <div class="nav-section-title">Admin Management</div>
+          <li>
+            <a href="/admin/users" class="nav-item">
+              <i class="fa-solid fa-users nav-icon"></i>
+              <span>User Panel</span>
+            </a>
+          </li>
+        <% } %>
+      <% } else { %>
+        <li>
+          <a href="/" class="nav-item">
+            <i class="fa-solid fa-house nav-icon"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="/login" class="nav-item">
+            <i class="fa-solid fa-right-to-bracket nav-icon"></i>
+            <span>Login</span>
+          </a>
+        </li>
+        <li>
+          <a href="/register" class="nav-item">
+            <i class="fa-solid fa-user-plus nav-icon"></i>
+            <span>Register</span>
+          </a>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
+</aside>
+
+<main class="content-area">
+  <!-- Flash Messaging Banners -->
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible">
+      <i class="fa-solid fa-circle-check alert-icon"></i>
+      <span class="alert-message"><%= success %></span>
+    </div>
+  <% } %>
+
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <i class="fa-solid fa-circle-exclamation alert-icon"></i>
+      <span class="alert-message"><%= error %></span>
+    </div>
+  <% } %>

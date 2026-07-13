@@ -1,0 +1,287 @@
+<%- include('partials/header') %>
+<%- include('partials/sidebar') %>
+
+<div class="dashboard-header-container">
+  <h1><%= title %></h1>
+  <p class="subtitle">Welcome back, <strong><%= user.username %></strong>. Here is your overview.</p>
+</div>
+
+<% if (user.role === 'admin') { %>
+  <!-- ========================================== -->
+  <!-- ADMIN DASHBOARD -->
+  <!-- ========================================== -->
+  <div class="stats-cards-grid">
+    <div class="stat-card">
+      <div class="stat-icon bg-indigo"><i class="fa-solid fa-users"></i></div>
+      <div class="stat-info">
+        <span class="stat-label">Registered Members</span>
+        <h3 class="stat-value"><%= stats.totalMembers %></h3>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon bg-emerald"><i class="fa-solid fa-calendar-check"></i></div>
+      <div class="stat-info">
+        <span class="stat-label">Total Events</span>
+        <h3 class="stat-value"><%= stats.totalEvents %></h3>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon bg-amber"><i class="fa-solid fa-wallet"></i></div>
+      <div class="stat-info">
+        <span class="stat-label">System Value (Budget)</span>
+        <h3 class="stat-value">$<%= parseFloat(stats.totalBudget).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-charts-layout">
+    <div class="chart-card">
+      <h3>Event Distribution by Category</h3>
+      <div class="chart-container">
+        <canvas id="adminCategoryChart"></canvas>
+      </div>
+    </div>
+    
+    <div class="quick-links-card">
+      <h3>Administrative Quick Actions</h3>
+      <div class="quick-actions-list">
+        <a href="/admin/users" class="quick-action-btn">
+          <i class="fa-solid fa-users-gear"></i>
+          <div>
+            <h4>Manage User Registrations</h4>
+            <p>Update roles and delete user registrations.</p>
+          </div>
+        </a>
+        <a href="/events" class="quick-action-btn">
+          <i class="fa-solid fa-folder-open"></i>
+          <div>
+            <h4>Global Events Audit</h4>
+            <p>Audit and manage all active events in the system.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Chart Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Parse category distribution from server EJS
+      const statsData = <%- JSON.stringify(stats.categoryStats) %>;
+      const labels = statsData.map(item => item.category);
+      const data = statsData.map(item => item.count);
+
+      const ctx = document.getElementById('adminCategoryChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: [
+              'rgba(99, 102, 241, 0.85)',  // Indigo
+              'rgba(16, 185, 129, 0.85)',  // Emerald
+              'rgba(245, 158, 11, 0.85)',  // Amber
+              'rgba(239, 68, 68, 0.85)',   // Rose
+              'rgba(139, 92, 246, 0.85)'   // Purple
+            ],
+            borderColor: '#1e1b4b',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#94a3b8',
+                font: { family: 'Outfit', size: 12 }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+
+<% } else { %>
+  <!-- ========================================== -->
+  <!-- MEMBER DASHBOARD -->
+  <!-- ========================================== -->
+  
+  <!-- Countdown Notification Banner -->
+  <% if (nextEvent) { %>
+    <div class="countdown-banner">
+      <div class="countdown-info">
+        <i class="fa-solid fa-hourglass-start countdown-icon anim-pulse"></i>
+        <div>
+          <h4>Countdown to <strong><%= nextEvent.title %></strong></h4>
+          <p><%= nextEvent.location %> &bull; <%= new Date(nextEvent.event_date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+        </div>
+      </div>
+      <div class="countdown-clock">
+        <span class="days-num"><%= daysRemaining %></span>
+        <span class="days-label">Days Left</span>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="welcome-banner">
+      <i class="fa-solid fa-calendar-plus welcome-banner-icon"></i>
+      <div>
+        <h4>No upcoming events scheduled.</h4>
+        <p>Start planning your next activity now!</p>
+        <a href="/events/new" class="btn btn-primary btn-sm margin-top-xs">Add Event</a>
+      </div>
+    </div>
+  <% } %>
+
+  <!-- Urgent / Pending Task Notifications -->
+  <% if (urgentTasks && urgentTasks.length > 0) { %>
+    <div class="alert alert-warning-banner">
+      <div class="alert-banner-header">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span><strong>Urgent Attention:</strong> You have <%= urgentTasks.length %> pending planning tasks due within 7 days!</span>
+      </div>
+      <div class="alert-banner-body">
+        <ul>
+          <% urgentTasks.forEach(task => { %>
+            <li>
+              <span><strong><%= task.task_name %></strong> (for <em><%= task.event_title %></em>) is due by <strong><%= new Date(task.due_date).toLocaleDateString() %></strong></span>
+              <a href="/tasks/<%= task.task_id %>/edit" class="btn btn-xs btn-outline-warning">Update</a>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="member-dashboard-grid">
+    <!-- Left Column: Statistics & Graph -->
+    <div class="dashboard-main-col">
+      <div class="stats-cards-grid">
+        <div class="stat-card">
+          <div class="stat-icon bg-indigo"><i class="fa-solid fa-calendar"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">My Events</span>
+            <h3 class="stat-value"><%= events.length %></h3>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon bg-emerald"><i class="fa-solid fa-vault"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Total Budgets</span>
+            <h3 class="stat-value">$<%= parseFloat(budgetSummary.totalBudget || 0).toLocaleString(undefined, {minimumFractionDigits: 2}) %></h3>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon bg-rose"><i class="fa-solid fa-receipt"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Total Expenses</span>
+            <h3 class="stat-value">$<%= parseFloat(budgetSummary.totalSpent || 0).toLocaleString(undefined, {minimumFractionDigits: 2}) %></h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Component -->
+      <div class="chart-card">
+        <h3>Cumulative Financial Breakdown</h3>
+        <p class="chart-subtitle">Total Budget Allocations vs Combined Task Expenses</p>
+        <div class="chart-container">
+          <canvas id="budgetBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Quick Event List -->
+    <div class="dashboard-side-col">
+      <div class="card event-quick-card">
+        <div class="card-header flex-between">
+          <h3>Upcoming Events</h3>
+          <a href="/events" class="text-link">View All</a>
+        </div>
+        <div class="card-body">
+          <% if (events && events.length > 0) { %>
+            <div class="quick-events-list">
+              <% events.slice(0, 4).forEach(event => { %>
+                <div class="quick-event-item">
+                  <div class="quick-event-date">
+                    <span class="date-month"><%= new Date(event.event_date).toLocaleString('default', { month: 'short' }) %></span>
+                    <span class="date-day"><%= new Date(event.event_date).getDate() %></span>
+                  </div>
+                  <div class="quick-event-details">
+                    <h4><a href="/events/<%= event.event_id %>"><%= event.title %></a></h4>
+                    <p><i class="fa-solid fa-location-dot"></i> <%= event.location %></p>
+                    <span class="badge badge-<%= event.status.toLowerCase() %>"><%= event.status %></span>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="empty-state">
+              <p>No events found.</p>
+              <a href="/events/new" class="btn btn-outline btn-sm">Create Event</a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Member Chart Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const budget = <%= budgetSummary.totalBudget || 0 %>;
+      const spent = <%= budgetSummary.totalSpent || 0 %>;
+      const remaining = Math.max(0, budget - spent);
+
+      const ctx = document.getElementById('budgetBarChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Total Budget Allocations', 'Combined Task Expenses', 'Remaining Savings'],
+          datasets: [{
+            label: 'Financial Status ($)',
+            data: [budget, spent, remaining],
+            backgroundColor: [
+              'rgba(99, 102, 241, 0.8)', // Indigo
+              'rgba(244, 63, 94, 0.8)',  // Rose
+              'rgba(16, 185, 129, 0.8)'  // Emerald
+            ],
+            borderColor: [
+              'rgb(99, 102, 241)',
+              'rgb(244, 63, 94)',
+              'rgb(16, 185, 129)'
+            ],
+            borderWidth: 1.5,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#94a3b8', font: { family: 'Outfit' } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#94a3b8', font: { family: 'Outfit', weight: 'bold' } }
+            }
+          }
+        }
+      });
+    });
+  </script>
+<% } %>
+
+<%- include('partials/footer') %>

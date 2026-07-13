@@ -1,0 +1,78 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="form-page-container">
+  <div class="form-card">
+    <div class="form-card-header">
+      <i class="fa-solid fa-calendar-minus form-header-icon text-indigo"></i>
+      <h2>Edit Event Details</h2>
+      <p>Modify details for <strong><%= event.title %></strong></p>
+    </div>
+    
+    <form action="/events/<%= event.event_id %>" method="POST" class="standard-form">
+      <div class="form-group">
+        <label for="title"><i class="fa-solid fa-heading"></i> Event Title *</label>
+        <input type="text" id="title" name="title" class="form-control" value="<%= event.title %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description"><i class="fa-solid fa-align-left"></i> Description / Notes</label>
+        <textarea id="description" name="description" class="form-control" rows="4"><%= event.description %></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="event_date"><i class="fa-regular fa-calendar"></i> Date *</label>
+          <input type="date" id="event_date" name="event_date" class="form-control" value="<%= formattedDate %>" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="event_time"><i class="fa-regular fa-clock"></i> Time *</label>
+          <input type="time" id="event_time" name="event_time" class="form-control" value="<%= event.event_time.substring(0,5) %>" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="category"><i class="fa-solid fa-tags"></i> Category *</label>
+          <select id="category" name="category" class="form-control" required>
+            <option value="Wedding" <%= event.category === 'Wedding' ? 'selected' : '' %>>Wedding</option>
+            <option value="Birthday" <%= event.category === 'Birthday' ? 'selected' : '' %>>Birthday</option>
+            <option value="Corporate" <%= event.category === 'Corporate' ? 'selected' : '' %>>Corporate</option>
+            <option value="Social" <%= event.category === 'Social' ? 'selected' : '' %>>Social</option>
+            <option value="Other" <%= event.category === 'Other' ? 'selected' : '' %>>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="budget"><i class="fa-solid fa-wallet"></i> Estimated Budget ($) *</label>
+          <input type="number" id="budget" name="budget" min="0" step="0.01" class="form-control" value="<%= event.budget %>" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="location"><i class="fa-solid fa-location-dot"></i> Venue / Location *</label>
+          <input type="text" id="location" name="location" class="form-control" value="<%= event.location %>" required>
+        </div>
+
+        <div class="form-group">
+          <label for="status"><i class="fa-solid fa-circle-info"></i> Event Status *</label>
+          <select id="status" name="status" class="form-control" required>
+            <option value="Planning" <%= event.status === 'Planning' ? 'selected' : '' %>>Planning</option>
+            <option value="Active" <%= event.status === 'Active' ? 'selected' : '' %>>Active</option>
+            <option value="Completed" <%= event.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+            <option value="Cancelled" <%= event.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="/events/<%= event.event_id %>" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

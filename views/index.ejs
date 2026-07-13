@@ -1,0 +1,68 @@
+<%- include('partials/header') %>
+<%- include('partials/sidebar') %>
+
+<div class="hero-section">
+  <div class="hero-content">
+    <span class="hero-badge">Next-Generation Event Planner</span>
+    <h1 class="hero-title">Plan the Perfect Event with <span>PlanIt</span></h1>
+    <p class="hero-description">
+      An elegant, premium solution to organize activities, track task progression, manage budgets, and coordinate events seamlessly. Get started today to level up your organization.
+    </p>
+    <div class="hero-buttons">
+      <a href="/register" class="btn btn-primary btn-lg">Get Started Free</a>
+      <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <!-- SVG illustration / beautiful graphic card -->
+    <div class="floating-card">
+      <div class="floating-header">
+        <i class="fa-solid fa-calendar-check text-accent"></i>
+        <span>Event Status</span>
+      </div>
+      <div class="floating-body">
+        <h3>Anniversary Banquet</h3>
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: 80%;"></div>
+        </div>
+        <p>Budget: $15,000 | Spent: $13,700</p>
+      </div>
+    </div>
+    
+    <div class="floating-card secondary">
+      <div class="floating-header">
+        <i class="fa-solid fa-list-check text-success"></i>
+        <span>Pending Tasks</span>
+      </div>
+      <div class="floating-body">
+        <ul>
+          <li><i class="fa-regular fa-square"></i> Book DJ Audio</li>
+          <li><i class="fa-regular fa-square-check text-success"></i> Pay Florist Deposit</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="features-section">
+  <h2 class="section-title">Why Event Organizers Choose PlanIt</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <i class="fa-solid fa-shield-halved feature-icon"></i>
+      <h3>Role Authorization</h3>
+      <p>Custom user access levels allowing managers to control multiple events while administrators monitor site statistics.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fa-solid fa-coins feature-icon"></i>
+      <h3>Budget Analytics</h3>
+      <p>Compare your overall event budgets against cumulative activity expenses with interactive breakdown charts.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fa-solid fa-hourglass-half feature-icon"></i>
+      <h3>Task Timelines</h3>
+      <p>Stay on track with due date lists, status badges, and real-time dashboard countdown notifications.</p>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

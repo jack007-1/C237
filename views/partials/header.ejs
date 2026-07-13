@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'PlanIt' %> - Event & Activity Manager</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  
+  <div class="app-container">
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <div class="navbar-brand">
+        <a href="/" class="brand-link">
+          <i class="fa-solid fa-calendar-check logo-icon"></i>
+          <span class="brand-name">Plan<span>It</span></span>
+        </a>
+      </div>
+      
+      <div class="navbar-actions">
+        <% if (user) { %>
+          <div class="user-profile-menu">
+            <span class="welcome-text">Hello, <strong><%= user.username %></strong> (<%= user.role %>)</span>
+            <a href="/logout" class="btn btn-outline btn-sm">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+          </div>
+        <% } else { %>
+          <div class="auth-buttons">
+            <a href="/login" class="btn btn-outline btn-sm">Login</a>
+            <a href="/register" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        <% } %>
+      </div>
+    </header>
+
+    <div class="main-layout">

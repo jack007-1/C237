@@ -1,0 +1,54 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="form-page-container">
+  <div class="form-card">
+    <div class="form-card-header">
+      <i class="fa-solid fa-list-check form-header-icon text-indigo"></i>
+      <h2>Edit Task</h2>
+      <p>Modify task details</p>
+    </div>
+    
+    <form action="/tasks/<%= task.task_id %>" method="POST" class="standard-form">
+      <div class="form-group">
+        <label for="task_name"><i class="fa-solid fa-clipboard-list"></i> Task Title *</label>
+        <input type="text" id="task_name" name="task_name" class="form-control" value="<%= task.task_name %>" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="assigned_to"><i class="fa-solid fa-user"></i> Assigned To *</label>
+          <input type="text" id="assigned_to" name="assigned_to" class="form-control" value="<%= task.assigned_to %>" required>
+        </div>
+
+        <div class="form-group">
+          <label for="due_date"><i class="fa-regular fa-calendar"></i> Due Date *</label>
+          <input type="date" id="due_date" name="due_date" class="form-control" value="<%= formattedDate %>" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cost"><i class="fa-solid fa-dollar-sign"></i> Cost ($) *</label>
+          <input type="number" id="cost" name="cost" min="0" step="0.01" class="form-control" value="<%= task.cost %>" required>
+        </div>
+
+        <div class="form-group">
+          <label for="status"><i class="fa-solid fa-circle-question"></i> Status *</label>
+          <select id="status" name="status" class="form-control" required>
+            <option value="Pending" <%= task.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+            <option value="In Progress" <%= task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+            <option value="Completed" <%= task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="/events/<%= task.event_id %>" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
