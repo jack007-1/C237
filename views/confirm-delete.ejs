@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card border-0 shadow rounded-4 overflow-hidden my-5 bg-white">
+      <div class="card-body p-5 text-center">
+        <i class="fa-solid fa-triangle-exclamation text-danger fa-4x mb-3"></i>
+        <h3 class="fw-bold text-dark mb-2">Delete Listing?</h3>
+        <p class="text-secondary small mb-4">Are you sure you want to delete <strong>"<%= listing.title %>"</strong>? This action cannot be undone, and all associated flags and active reservations will be removed.</p>
+
+        <form action="/listings/<%= listing.id %>/delete" method="POST">
+          <button type="submit" class="btn btn-danger w-100 fw-bold py-2 mb-2"><i class="fa-solid fa-trash me-2"></i>Delete Permanently</button>
+          <a href="/listings/<%= listing.id %>" class="btn btn-outline-secondary w-100 py-2 text-dark">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

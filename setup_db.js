@@ -21,7 +21,7 @@ connection.connect((err) => {
   console.log('Connected successfully!');
 
   // Read SQL script
-  const sqlPath = path.join(__dirname, 'init_db.sql');
+  const sqlPath = path.join(__dirname, 'database.sql');
   console.log(`Reading SQL file from ${sqlPath}...`);
   
   fs.readFile(sqlPath, 'utf8', (err, sql) => {

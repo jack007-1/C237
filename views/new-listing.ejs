@@ -1,0 +1,97 @@
+<%- include('partials/header') %>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="mb-4">
+      <a href="/my-listings" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard</a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 bg-white mb-5">
+      <div class="card-header border-light py-3 bg-white text-center">
+        <i class="fa-solid fa-circle-plus text-warning fa-3x mb-2"></i>
+        <h2 class="fw-bold text-dark">List an Item for Sale</h2>
+        <p class="text-secondary small mb-0">Fill in the fields below to make your item visible to buyers on campus.</p>
+      </div>
+      <div class="card-body p-4">
+        
+        <form action="/listings" method="POST" enctype="multipart/form-data">
+          <!-- Duplicate Listing Warning Banner (B4) -->
+          <% if (typeof showDuplicateWarning !== 'undefined' && showDuplicateWarning) { %>
+            <div class="alert alert-warning border-warning p-3 mb-4" role="alert">
+              <h5 class="alert-heading fw-bold"><i class="fa-solid fa-circle-exclamation me-1"></i> Duplicate Listing Detected!</h5>
+              <p class="small mb-2">You already have an active/available listing with the exact title: <strong>"<%= formData.title %>"</strong>. Check the bypass option below to force listing this item.</p>
+              <div class="form-check">
+                <input class="form-check-input border-warning" type="checkbox" name="confirm_duplicate" value="true" id="confirmDuplicate" required>
+                <label class="form-check-label fw-bold text-dark" for="confirmDuplicate">
+                  Yes, list this duplicate item anyway.
+                </label>
+              </div>
+            </div>
+          <% } %>
+
+          <div class="mb-3">
+            <label for="title" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Item Title *</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="e.g. C237 Textbook (2025 Edition)" value="<%= typeof formData !== 'undefined' ? formData.title : '' %>" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Detailed Description *</label>
+            <textarea id="description" name="description" class="form-control" rows="4" placeholder="Mention item highlights, details, defects, meeting spots on campus..." required><%= typeof formData !== 'undefined' ? formData.description : '' %></textarea>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="category" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Category *</label>
+              <select id="category" name="category" class="form-select" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="textbook" <%= typeof formData !== 'undefined' && formData.category === 'textbook' ? 'selected' : '' %>>Textbook</option>
+                <option value="calculator" <%= typeof formData !== 'undefined' && formData.category === 'calculator' ? 'selected' : '' %>>Calculator</option>
+                <option value="lab_coat" <%= typeof formData !== 'undefined' && formData.category === 'lab_coat' ? 'selected' : '' %>>Lab Coat</option>
+                <option value="notes" <%= typeof formData !== 'undefined' && formData.category === 'notes' ? 'selected' : '' %>>Notes</option>
+                <option value="electronics" <%= typeof formData !== 'undefined' && formData.category === 'electronics' ? 'selected' : '' %>>Electronics</option>
+                <option value="others" <%= typeof formData !== 'undefined' && formData.category === 'others' ? 'selected' : '' %>>Others</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="item_condition" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Item Condition *</label>
+              <select id="item_condition" name="item_condition" class="form-select" required>
+                <option value="" disabled selected>Select Condition</option>
+                <option value="new" <%= typeof formData !== 'undefined' && formData.item_condition === 'new' ? 'selected' : '' %>>New</option>
+                <option value="like_new" <%= typeof formData !== 'undefined' && formData.item_condition === 'like_new' ? 'selected' : '' %>>Like New</option>
+                <option value="used" <%= typeof formData !== 'undefined' && formData.item_condition === 'used' ? 'selected' : '' %>>Used</option>
+                <option value="worn" <%= typeof formData !== 'undefined' && formData.item_condition === 'worn' ? 'selected' : '' %>>Worn</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="price" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Price ($) *</label>
+              <input type="number" id="price" name="price" class="form-control" placeholder="0.00" min="0" step="0.01" value="<%= typeof formData !== 'undefined' ? formData.price : '' %>" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="module_code" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Module Code (e.g. C237) - optional</label>
+              <input type="text" id="module_code" name="module_code" class="form-control" placeholder="1 letter + 3 numbers" value="<%= typeof formData !== 'undefined' ? formData.module_code : '' %>">
+              <div class="form-text small text-muted">Must follow C237 formatting format (e.g. C207, B216).</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="image" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Upload Item Photo (JPG / PNG only) - optional</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/png, image/jpeg, image/jpg">
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 border-top pt-3">
+            <a href="/my-listings" class="btn btn-outline-secondary px-4">Cancel</a>
+            <button type="submit" class="btn btn-warning fw-bold text-dark px-4">Publish Listing</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+
+<div class="mb-4">
+  <h1 class="fw-bold">My Reserved Items</h1>
+  <p class="text-secondary mb-0">Track textbook and gadget deals you have reserved with other students.</p>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 bg-white">
+  <div class="card-header border-light py-3 bg-white">
+    <h5 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-bookmark me-2 text-warning"></i>My Reservations</h5>
+  </div>
+  <div class="card-body p-0">
+    <% if (reservations && reservations.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-4">Listing Title</th>
+              <th>Category</th>
+              <th>Listing Status</th>
+              <th>Deal Status</th>
+              <th>Seller</th>
+              <th>Seller Contact</th>
+              <th>Date Reserved</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reservations.forEach(resItem => { %>
+              <tr>
+                <td class="ps-4">
+                  <strong><a href="/listings/<%= resItem.listing_id %>" class="text-dark"><%= resItem.title %></a></strong>
+                  <span class="d-block small text-muted">Price: $<%= parseFloat(resItem.price).toFixed(2) %></span>
+                </td>
+                <td class="text-uppercase small"><%= resItem.category %></td>
+                <td>
+                  <span class="badge bg-<%= resItem.listing_status === 'available' ? 'success' : (resItem.listing_status === 'reserved' ? 'warning text-dark' : 'secondary') %> text-uppercase">
+                    <%= resItem.listing_status %>
+                  </span>
+                </td>
+                <td>
+                  <span class="badge bg-<%= resItem.reservation_status === 'active' ? 'primary' : (resItem.reservation_status === 'completed' ? 'success' : 'secondary') %> text-uppercase">
+                    Reservation: <%= resItem.reservation_status %>
+                  </span>
+                </td>
+                <td><strong><%= resItem.seller_name %></strong></td>
+                <td><small class="text-secondary font-monospace"><%= resItem.seller_contact %></small></td>
+                <td class="small text-muted"><%= new Date(resItem.reserved_at).toLocaleDateString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="text-center py-5">
+        <i class="fa-solid fa-bookmark fa-3x text-muted opacity-25 mb-3"></i>
+        <h5 class="fw-bold text-muted">No Reservations Yet</h5>
+        <p class="text-muted small mb-4">Browse listings and reserve textbooks or calculators you need!</p>
+        <a href="/" class="btn btn-warning btn-sm fw-bold text-dark px-4 py-2"><i class="fa-solid fa-store me-1"></i>Go to Storefront</a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

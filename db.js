@@ -1,12 +1,11 @@
 const mysql = require('mysql2');
-require('dotenv').config();
 
 // Create a connection pool to manage database connections
 const db = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'RP738964$',
-  database: process.env.DB_NAME || 'planit_db',
+  host: 'localhost',
+  user: 'root',
+  password: 'RP738964$',
+  database: 'rp_market_db',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0

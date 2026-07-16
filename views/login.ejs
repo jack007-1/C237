@@ -1,34 +1,44 @@
 <%- include('partials/header') %>
-<%- include('partials/sidebar') %>
 
-<div class="auth-wrapper">
-  <div class="auth-card">
-    <div class="auth-header">
-      <i class="fa-solid fa-right-to-bracket auth-icon"></i>
-      <h2>Sign In to PlanIt</h2>
-      <p>Enter your credentials to manage your events</p>
-    </div>
-    
-    <form action="/login" method="POST" class="auth-form">
-      <div class="form-group">
-        <label for="email"><i class="fa-solid fa-envelope"></i> Email Address</label>
-        <input type="email" id="email" name="email" class="form-control" placeholder="user@planit.com" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
-      </div>
-      
-      <button type="submit" class="btn btn-primary btn-block btn-lg">Log In</button>
-    </form>
-    
-    <div class="auth-footer">
-      <p>Don't have an account? <a href="/register">Register here</a></p>
-      <div class="test-credentials">
-        <p><strong>Demo Accounts:</strong></p>
-        <p>Regular User: <code>user@planit.com</code> / <code>user123</code></p>
-        <p>Admin: <code>admin@planit.com</code> / <code>admin123</code></p>
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card border-0 shadow rounded-4 overflow-hidden my-5 bg-white">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <i class="fa-solid fa-right-to-bracket text-warning fa-3x mb-2"></i>
+          <h2 class="fw-bold text-dark">Sign In</h2>
+          <p class="text-secondary small">Access RPMarket campus second-hand deals</p>
+        </div>
+
+        <form action="/login" method="POST">
+          <div class="mb-3">
+            <label for="email" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Email Address</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-secondary border-opacity-25"><i class="fa-solid fa-envelope text-secondary"></i></span>
+              <input type="email" id="email" name="email" class="form-control border-secondary border-opacity-25" placeholder="student@rp.edu.sg" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="form-label small text-uppercase tracking-wider fw-bold text-muted">Password</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-secondary border-opacity-25"><i class="fa-solid fa-lock text-secondary"></i></span>
+              <input type="password" id="password" name="password" class="form-control border-secondary border-opacity-25" placeholder="••••••••" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-warning w-100 fw-bold py-2 mb-3"><i class="fa-solid fa-right-to-bracket me-2"></i>Login</button>
+        </form>
+
+        <div class="text-center mt-4">
+          <p class="mb-0 text-secondary small">Don't have an account? <a href="/register" class="text-warning fw-bold">Register here</a></p>
+        </div>
+
+        <div class="mt-4 p-3 bg-light rounded-3 border border-secondary border-opacity-10">
+          <p class="small mb-1 fw-bold text-muted text-uppercase tracking-wider">Demo Accounts:</p>
+          <p class="small mb-1 text-secondary">Regular student: <code>student1@rp.edu.sg</code> / <code>student123</code></p>
+          <p class="small mb-0 text-secondary">Admin moderator: <code>admin@rp.edu.sg</code> / <code>admin123</code></p>
+        </div>
       </div>
     </div>
   </div>
